@@ -3,10 +3,10 @@
   "version": "2.0.0",
   "private": true,
   "description": "Student Event Participation platform with Express, SQLite and a responsive front end.",
-  "main": "server.js",
+  "main": "backend/server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node --watch server.js"
+    "start": "node backend/server.js",
+    "dev": "node --watch backend/server.js"
   },
   "engines": {
     "node": ">=20"

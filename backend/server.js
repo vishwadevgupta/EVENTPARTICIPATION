@@ -10,14 +10,14 @@ const db=require('./db');
 const app=express();
 const PORT=Number(process.env.PORT||3000);
 const JWT_SECRET=process.env.JWT_SECRET;
-if(!JWT_SECRET){console.error('JWT_SECRET is required. Copy .env.example to .env and set a secret.');process.exit(1);}
+if(!JWT_SECRET){console.error('JWT_SECRET is required. copy config/.env.example to .env and set a secret.');process.exit(1);}
 
 app.use(helmet({contentSecurityPolicy:false}));
 app.use(express.json({limit:'100kb'}));
 app.use(express.urlencoded({extended:false}));
 const authLimiter=rateLimit({windowMs:15*60*1000,max:30,standardHeaders:true,legacyHeaders:false,message:{error:'Too many authentication attempts. Try again later.'}});
 app.use((req,res,next)=>{if(/^\/(server\.js|db\.js|package\.json|\.env|\.env\.example)(\/|$)/.test(req.path)||req.path.startsWith('/data/'))return res.status(404).end();next();});
-app.use(express.static(path.join(__dirname,'.'),{extensions:['html']}));
+app.use(express.static(path.join(__dirname,'../frontend'),{extensions:['html']}));
 
 function auth(req,res,next){
  const header=req.headers.authorization||'';

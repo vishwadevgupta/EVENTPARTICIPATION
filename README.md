@@ -117,11 +117,11 @@ Copy the example file:
 
 **macOS / Linux**
 
-    cp .env.example .env
+    cp config/.env.example .env
 
 **Windows PowerShell**
 
-    Copy-Item .env.example .env
+    Copy-Item config/.env.example .env
 
 Then edit `.env`:
 
@@ -183,7 +183,7 @@ You do not need to manually create tables.
 
 Open:
 
-    http://localhost:3000/Signin.html
+    http://localhost:3000/pages/Signin.html
 
 Choose **Create account**, then enter:
 
@@ -213,7 +213,7 @@ Sign in using those credentials. The dashboard will expose the **Admin** link fo
 
 Admin page:
 
-    http://localhost:3000/admin.html
+    http://localhost:3000/pages/admin.html
 
 ## 🔌 API
 
@@ -256,24 +256,30 @@ Protected endpoints require:
 ## 📁 Project structure
 
     EVENTPARTICIPATION/
-    ├── index.html
-    ├── home.css
-    ├── services.html
-    ├── services.css
-    ├── about.html
-    ├── about.css
-    ├── Signin.html
-    ├── signin.css
-    ├── dashboard.html
-    ├── dashboard.css
-    ├── admin.html
-    ├── admin.css
-    ├── api.js
-    ├── app.js
-    ├── server.js
-    ├── db.js
+    ├── frontend/
+    │   ├── index.html
+    │   ├── pages/
+    │   │   ├── about.html
+    │   │   ├── services.html
+    │   │   ├── Signin.html
+    │   │   ├── dashboard.html
+    │   │   └── admin.html
+    │   ├── css/
+    │   │   ├── home.css
+    │   │   ├── about.css
+    │   │   ├── services.css
+    │   │   ├── signin.css
+    │   │   ├── dashboard.css
+    │   │   └── admin.css
+    │   └── js/
+    │       ├── api.js
+    │       └── app.js
+    ├── backend/
+    │   ├── server.js
+    │   └── db.js
+    ├── config/
+    │   └── .env.example
     ├── package.json
-    ├── .env.example
     ├── .gitignore
     └── README.md
 
