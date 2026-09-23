@@ -195,7 +195,7 @@ After creating the account, sign in and you can register for events.
 
 ## ⚡ Admin access
 
-The admin account is created from:
+The admin account is created from **on the first database initialization**:
 
     ADMIN_EMAIL
     ADMIN_PASSWORD
@@ -207,7 +207,7 @@ Example:
     ADMIN_EMAIL=admin@example.com
     ADMIN_PASSWORD=change-this-password
 
-Restart the server after changing these values.
+If you change these values after an admin account already exists, update the database account or remove the local database and restart for a fresh development setup.
 
 Sign in using those credentials. The dashboard will expose the **Admin** link for an admin user.
 
