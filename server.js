@@ -3,6 +3,7 @@ const path=require('path');
 const bcrypt=require('bcryptjs');
 const jwt=require('jsonwebtoken');
 const helmet=require('helmet');
+const rateLimit=require('express-rate-limit');
 require('dotenv').config();
 const db=require('./db');
 
@@ -14,6 +15,8 @@ if(!JWT_SECRET){console.error('JWT_SECRET is required. Copy .env.example to .env
 app.use(helmet({contentSecurityPolicy:false}));
 app.use(express.json({limit:'100kb'}));
 app.use(express.urlencoded({extended:false}));
+const authLimiter=rateLimit({windowMs:15*60*1000,max:30,standardHeaders:true,legacyHeaders:false,message:{error:'Too many authentication attempts. Try again later.'}});
+app.use((req,res,next)=>{if(/^\/(server\.js|db\.js|package\.json|\.env|\.env\.example)(\/|$)/.test(req.path)||req.path.startsWith('/data/'))return res.status(404).end();next();});
 app.use(express.static(path.join(__dirname,'.'),{extensions:['html']}));
 
 function auth(req,res,next){
@@ -48,7 +51,7 @@ app.get('/api/events/:id',(req,res)=>{
  res.json({...e,available:e.capacity-e.registered_count});
 });
 
-app.post('/api/auth/register',async(req,res)=>{
+app.post('/api/auth/register',authLimiter,async(req,res)=>{
  const {name,email,password}=req.body;
  if(!name||!email||!password)return res.status(400).json({error:'Name, email and password are required'});
  if(password.length<8)return res.status(400).json({error:'Password must be at least 8 characters'});
@@ -60,7 +63,7 @@ app.post('/api/auth/register',async(req,res)=>{
  }catch(e){if(String(e.message).includes('UNIQUE'))return res.status(409).json({error:'An account with this email already exists'});res.status(500).json({error:'Unable to create account'});}
 });
 
-app.post('/api/auth/login',async(req,res)=>{
+app.post('/api/auth/login',authLimiter,async(req,res)=>{
  const {email,password}=req.body;
  if(!email||!password)return res.status(400).json({error:'Email and password are required'});
  const user=db.prepare('SELECT * FROM users WHERE email=?').get(email.trim().toLowerCase());
